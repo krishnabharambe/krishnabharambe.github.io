@@ -109,6 +109,22 @@
             <p><strong>Start with bounded autonomy.</strong> Give the agent only the capabilities required for its task. Keep consequential actions reviewable, and make safe behavior the default when identity, policy, or context cannot be verified.</p>
           </aside>
 
+          <figure class="agent-flow" aria-labelledby="agent-flow-title">
+            <figcaption>
+              <span class="eyebrow">THE SHORT VERSION</span>
+              <strong id="agent-flow-title">A safe agent action, step by step</strong>
+            </figcaption>
+            <ol class="agent-flow-steps">
+              <li><span class="flow-number">01</span><span><strong>Receive a request</strong><small>Identify the requester and the task.</small></span></li>
+              <li><span class="flow-number">02</span><span><strong>Establish agent identity</strong><small>Use a known agent and scoped authority.</small></span></li>
+              <li><span class="flow-number">03</span><span><strong>Check policy and access</strong><small>Verify the action, resource, and permissions.</small></span></li>
+              <li><span class="flow-number">04</span><span><strong>Get approval when needed</strong><small>Pause for review if impact or policy requires it.</small></span></li>
+              <li><span class="flow-number">05</span><span><strong>Run a scoped tool action</strong><small>The tool validates and enforces access.</small></span></li>
+              <li><span class="flow-number">06</span><span><strong>Record the outcome</strong><small>Log the actor, decision, target, and result.</small></span></li>
+            </ol>
+            <p class="agent-flow-deny"><span aria-hidden="true">↳</span><span><strong>If authorization fails:</strong> stop the action and record the denial.</span></p>
+          </figure>
+
           <section id="agent-model" class="article-section">
             <p class="eyebrow">01 / Understand the system</p>
             <h2>A practical model for an AI agent</h2>
