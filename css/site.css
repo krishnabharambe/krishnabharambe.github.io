@@ -59,8 +59,8 @@ h1 { margin-bottom: 24px; font-size: clamp(58px, 6.3vw, 88px); font-weight: 600;
 .visual-core { position: absolute; top: 50%; left: 50%; display: flex; width: 33%; height: 33%; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(184,242,216,.45); border-radius: 50%; background: linear-gradient(145deg, #1d3548, #122033); box-shadow: 0 0 50px rgba(70,189,146,.13), inset 0 0 30px rgba(184,242,216,.06); transform: translate(-50%,-50%); }
 .core-caption { color: #a8b9c3; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; line-height: 1.7; text-align: center; }
 .float-card { position: absolute; z-index: 1; display: flex; width: 255px; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid rgba(255,255,255,.13); background: rgba(23,38,59,.91); box-shadow: 0 15px 40px rgba(0,0,0,.16); color: #e7ecef; font-size: 11px; font-weight: 600; }
-.card-iga { top: 28%; left: 0; }
-.card-auto { right: -2%; bottom: 28%; }
+.card-iga { top: 20%; left: 0; }
+.card-auto { right: -2%; bottom: 20%; }
 .float-card small { display: block; margin-top: 4px; color: #8494a3; font-size: 9px; font-weight: 400; }
 .card-symbol { display: grid; width: 31px; height: 31px; flex: 0 0 auto; place-items: center; border: 1px solid rgba(184,242,216,.25); color: var(--mint); font-family: var(--mono); font-size: 9px; }
 .card-check { margin-left: auto; color: var(--mint); font-size: 16px; }
@@ -166,6 +166,7 @@ h2 { margin-bottom: 0; font-size: clamp(37px, 4.1vw, 54px); font-weight: 600; le
   .wordmark-name { display: none; }
   .site-nav { gap: 0; }
   .site-nav > a:not(.nav-cta) { display: none; }
+  .site-nav > a[href="Thinking/identities/"] { display: inline-block; margin-right: 14px; }
   .nav-cta { padding: 10px 12px; font-size: 10px; }
   .hero { min-height: auto; height: auto; grid-template-columns: 1fr; gap: 25px; padding: 130px 7% 84px; }
   .hero-copy { max-width: 100%; }

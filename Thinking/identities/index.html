@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2d">
+  <meta name="description" content="A practical guide to human, non-human, AI, privileged, federated, and other identity types in Identity and Access Management (IAM).">
+  <title>Identity types in IAM — Krishna Bharambe</title>
+  <link rel="stylesheet" href="../../css/site.css">
+  <link rel="stylesheet" href="identities.css">
+</head>
+<body class="article-page">
+  <header class="article-header" id="top">
+    <a class="wordmark" href="../../index.html" aria-label="Krishna Bharambe home"><span>KB</span><span class="wordmark-name">Krishna Bharambe</span></a>
+    <nav class="article-nav" aria-label="Article navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a href="#identity-model">Identity model</a>
+      <a href="#governance">What to govern</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <header class="article-hero">
+        <div class="article-hero-inner">
+          <a class="article-back" href="../../index.html">← Back to portfolio</a>
+          <p class="eyebrow"><span class="status-dot"></span> THINKING / IDENTITY &amp; ACCESS MANAGEMENT</p>
+          <h1>Complete guide to<br>identity types <span class="accent">in IAM.</span></h1>
+          <p class="article-deck">People, applications, workloads, devices, and AI agents all need the right identity—and the right level of access. Here’s a practical way to classify and govern them.</p>
+          <div class="article-byline"><span>By Krishna Bharambe</span><span aria-hidden="true">·</span><span>Identity &amp; Automation</span><span aria-hidden="true">·</span><span>8 min read</span></div>
+        </div>
+        <div class="article-hero-art" aria-hidden="true">
+          <div class="article-orbit article-orbit-one"></div>
+          <div class="article-orbit article-orbit-two"></div>
+          <div class="article-orbit-core"><span>IAM</span><small>IDENTITY<br>LANDSCAPE</small></div>
+          <span class="orbit-label orbit-label-top">HUMAN · MACHINE · AI</span>
+          <span class="orbit-label orbit-label-bottom">IDENTIFY → GOVERN → REVIEW</span>
+        </div>
+      </header>
+
+      <div class="article-layout">
+        <aside class="article-toc" aria-label="Table of contents">
+          <p class="toc-heading">IN THIS ARTICLE</p>
+          <a href="#identity-model">A useful identity model</a>
+          <a href="#human-identities">Human identities</a>
+          <a href="#non-human-identities">Non-human identities</a>
+          <a href="#ai-identities">AI &amp; autonomous agents</a>
+          <a href="#other-categories">Other IAM categories</a>
+          <a href="#governance">What to collect &amp; govern</a>
+          <a href="#identity-account">Identity vs. account</a>
+        </aside>
+
+        <div class="article-content">
+          <p class="article-lead">In Identity and Access Management (IAM), an <strong>identity</strong> represents a person, system, application, device, workload, or other entity that can authenticate, receive permissions, or perform actions.</p>
+          <p>For modern IAM, a useful starting point is to group identities into <strong>human</strong>, <strong>non-human</strong>, and <strong>AI</strong> identities. Federation, external access, and privilege add important context around those groups.</p>
+
+          <aside class="article-callout">
+            <span class="callout-mark" aria-hidden="true">i</span>
+            <p><strong>These categories overlap.</strong> A cloud service account can be non-human, privileged, federated, and orphaned at the same time. Treat identity type as one attribute—not as a mutually exclusive classification.</p>
+          </aside>
+
+          <section id="identity-model" class="article-section">
+            <p class="eyebrow">01 / Start with the entity</p>
+            <h2>A practical identity model</h2>
+            <p>Start by identifying what is acting, then describe how it is owned, authenticated, and authorized. This keeps a person’s identity separate from the accounts they use and the access assigned to those accounts.</p>
+            <div class="model-grid">
+              <div><span>01</span><strong>Who or what?</strong><p>Person, application, workload, device, AI agent, or another entity.</p></div>
+              <div><span>02</span><strong>Who owns it?</strong><p>An accountable person or team, plus an authoritative source.</p></div>
+              <div><span>03</span><strong>What can it do?</strong><p>Accounts, credentials, roles, entitlements, and delegated authority.</p></div>
+              <div><span>04</span><strong>Is it still needed?</strong><p>Lifecycle status, review history, risk, and a clear end-of-life.</p></div>
+            </div>
+          </section>
+
+          <section id="human-identities" class="article-section">
+            <p class="eyebrow">02 / People</p>
+            <h2>Human identities</h2>
+            <p>Human identities belong to people. Their access is commonly managed through joiner–mover–leaver (JML) lifecycle processes, access requests, provisioning, certification, and deprovisioning.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Identity type</th><th scope="col">Examples</th><th scope="col">IAM consideration</th></tr></thead>
+                <tbody>
+                  <tr><td>Employee</td><td>Full-time employee, permanent staff</td><td>Authoritative HR source and JML lifecycle</td></tr>
+                  <tr><td>Contractor</td><td>External contractor, consultant</td><td>Sponsor, end date, and timely deprovisioning</td></tr>
+                  <tr><td>Temporary</td><td>Seasonal worker, temporary staff</td><td>Expiry date and limited-duration access</td></tr>
+                  <tr><td>Intern / trainee</td><td>Intern, graduate trainee</td><td>Time-bound access and program owner</td></tr>
+                  <tr><td>Partner</td><td>Business partner, vendor employee</td><td>Organization, sponsor, and external-access boundary</td></tr>
+                  <tr><td>Customer</td><td>Online banking or e-commerce customer</td><td>Customer identity lifecycle and privacy requirements</td></tr>
+                  <tr><td>Supplier</td><td>Supplier portal user</td><td>Supplier relationship and business justification</td></tr>
+                  <tr><td>Guest / B2B</td><td>Microsoft Entra B2B guest; user from another organization</td><td>Home organization, sponsor, and access review</td></tr>
+                  <tr><td>B2C</td><td>Consumer accessing a company service</td><td>Customer authentication and consent</td></tr>
+                  <tr><td>B2E</td><td>Employee accessing enterprise services</td><td>Workforce policies and enterprise lifecycle</td></tr>
+                  <tr><td>Privileged human</td><td>System administrator, database administrator</td><td>Separate admin access, strong controls, and review</td></tr>
+                  <tr><td>Emergency / break-glass</td><td>Emergency administrative identity</td><td>Restricted use, alerting, and post-use review</td></tr>
+                  <tr><td>Service desk</td><td>IT support or help-desk user</td><td>Role-scoped support permissions and traceability</td></tr>
+                  <tr><td>Auditor</td><td>Internal or external auditor</td><td>Read-only scope and time-limited access</td></tr>
+                  <tr><td>Executive</td><td>CEO, CFO, senior management</td><td>Risk-aware access and targeted protection</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="non-human-identities" class="article-section">
+            <p class="eyebrow">03 / Software, infrastructure &amp; machines</p>
+            <h2>Non-human identities</h2>
+            <p>Non-human identities (NHIs) are used by software, infrastructure, automated processes, and machines rather than directly by people. They often run unattended, which makes accountable ownership, credential handling, and lifecycle tracking especially important.</p>
+            <div class="identity-subtype">
+              <div class="subtype-heading"><span>A</span><h3>Application identities</h3></div>
+              <ul><li>Application registrations and enterprise applications</li><li>Service principals and application service accounts</li><li>OAuth clients and API clients</li><li>Integration accounts and middleware identities</li><li>Microservice identities</li></ul>
+            </div>
+            <div class="identity-subtype">
+              <div class="subtype-heading"><span>B</span><h3>Infrastructure &amp; workload identities</h3></div>
+              <ul><li>Virtual machines and server identities</li><li>Container identities and Kubernetes service accounts</li><li>Cloud workload and managed identities</li><li>Serverless function identities</li><li>CI/CD pipeline and build-agent identities</li><li>Infrastructure-as-code automation identities</li><li>Federated workload identities</li></ul>
+            </div>
+            <div class="identity-subtype">
+              <div class="subtype-heading"><span>C</span><h3>Data &amp; database identities</h3></div>
+              <ul><li>Oracle, MySQL, PostgreSQL, and SQL Server accounts</li><li>Snowflake users and service users</li><li>Data warehouse service accounts</li><li>ETL, data integration, and data replication identities</li><li>Backup, recovery, and database automation accounts</li></ul>
+            </div>
+            <div class="identity-subtype">
+              <div class="subtype-heading"><span>D</span><h3>API &amp; integration identities</h3></div>
+              <ul><li>API keys associated with a client or application</li><li>OAuth client-credentials identities</li><li>Integration-platform accounts and ETL connectors</li><li>Webhook delivery and API gateway service identities</li><li>Robotic Process Automation (RPA) bots and scheduled jobs</li><li>File-transfer and cross-system synchronization accounts</li></ul>
+            </div>
+            <div class="identity-subtype">
+              <div class="subtype-heading"><span>E</span><h3>Device identities</h3></div>
+              <ul><li>Employee laptops, desktops, and mobile devices</li><li>Servers and network appliances</li><li>IoT sensors and industrial OT devices</li><li>Printers and security cameras</li><li>Device certificates and machine credentials</li></ul>
+            </div>
+          </section>
+
+          <section id="ai-identities" class="article-section">
+            <p class="eyebrow">04 / A growing class of actors</p>
+            <h2>AI identities &amp; autonomous agents</h2>
+            <p>AI identities deserve explicit treatment when agents can call tools, access data, or perform actions. An agent’s authority should be defined, limited to what it needs, and reviewable after use.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Identity type</th><th scope="col">Example</th></tr></thead>
+                <tbody>
+                  <tr><td>AI agent</td><td>An autonomous IT support agent</td></tr>
+                  <tr><td>AI assistant</td><td>An enterprise copilot</td></tr>
+                  <tr><td>Multi-agent system</td><td>A coordinator agent managing several agents</td></tr>
+                  <tr><td>AI workflow</td><td>An agent executing a business workflow</td></tr>
+                  <tr><td>AI coding agent</td><td>An agent creating pull requests or deploying code</td></tr>
+                  <tr><td>AI security agent</td><td>An agent investigating security alerts</td></tr>
+                  <tr><td>AI data agent</td><td>An agent querying databases or data warehouses</td></tr>
+                  <tr><td>AI tool</td><td>A registered tool or integration used by an agent</td></tr>
+                  <tr><td>Model-serving identity</td><td>A workload identity used to invoke a model endpoint</td></tr>
+                  <tr><td>Delegated agent</td><td>An agent acting with specifically delegated user permissions</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <aside class="article-callout callout-dark">
+              <span class="callout-mark" aria-hidden="true">!</span>
+              <p><strong>Keep the actors distinct.</strong> The AI model, the agent running the model, the tool it calls, and the service account it uses may be separate entities. They should not automatically share one identity or one set of permissions.</p>
+            </aside>
+          </section>
+
+          <section id="other-categories" class="article-section">
+            <p class="eyebrow">05 / Context that crosses identity types</p>
+            <h2>Other enterprise IAM categories</h2>
+            <p>These labels describe access context, identity source, or lifecycle status. They can apply to human and non-human identities alike.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Category</th><th scope="col">Examples</th><th scope="col">Why it matters</th></tr></thead>
+                <tbody>
+                  <tr><td>Privileged</td><td>Domain admin, root, database admin, PAM-managed account</td><td>Elevated controls, monitoring, and recertification</td></tr>
+                  <tr><td>Emergency</td><td>Break-glass administrator</td><td>Protected, alertable, and tested emergency access</td></tr>
+                  <tr><td>Federated</td><td>SAML or OIDC user, external IdP identity</td><td>Trust boundary, claims, and session policy</td></tr>
+                  <tr><td>Directory</td><td>Active Directory user, group, or computer account</td><td>Directory source and relationship mapping</td></tr>
+                  <tr><td>Cloud</td><td>AWS IAM user or role, Azure managed identity, GCP service account</td><td>Cloud-native permissions and ownership</td></tr>
+                  <tr><td>Certificate</td><td>TLS certificate subject, workload certificate</td><td>Issuance, renewal, expiry, and revocation</td></tr>
+                  <tr><td>Cryptographic</td><td>SSH key holder, signing key, workload key</td><td>Key ownership, rotation, and usage scope</td></tr>
+                  <tr><td>Anonymous</td><td>Unauthenticated visitor or anonymous API consumer</td><td>Explicitly constrained unauthenticated access</td></tr>
+                  <tr><td>Pseudonymous</td><td>User represented by a non-real-name identifier</td><td>Privacy-aware correlation and data handling</td></tr>
+                  <tr><td>Test</td><td>QA account, UAT user, test automation account</td><td>Environment boundaries and non-production hygiene</td></tr>
+                  <tr><td>Shared</td><td>Shared operational account, legacy generic login</td><td>Accountability, attribution, and migration planning</td></tr>
+                  <tr><td>Dormant</td><td>Unused or inactive account</td><td>Inactivity review and safe disablement</td></tr>
+                  <tr><td>Orphaned</td><td>Account with no valid owner or source identity</td><td>Ownership discovery and remediation</td></tr>
+                  <tr><td>Non-human privileged</td><td>Automation account with administrator rights</td><td>Strong ownership and least-privilege review</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="governance" class="article-section">
+            <p class="eyebrow">06 / From inventory to governance</p>
+            <h2>What should an IAM engineer collect?</h2>
+            <p>When building an identity collector across infrastructure, databases, cloud platforms, applications, and AI workloads, capture enough context to establish ownership, evaluate access, and manage change over time.</p>
+            <div class="field-list">
+              <div><span>01</span><p><strong>Identity type</strong> — human, application, workload, device, AI agent, or another useful classification.</p></div>
+              <div><span>02</span><p><strong>Unique identifier</strong> — an immutable identifier from the authoritative source.</p></div>
+              <div><span>03</span><p><strong>Owner</strong> — the person or team accountable for the identity.</p></div>
+              <div><span>04</span><p><strong>Source system</strong> — Workday, Active Directory, AWS, a database, or another system of record.</p></div>
+              <div><span>05</span><p><strong>Entitlements</strong> — groups, roles, permissions, policies, and access assignments.</p></div>
+              <div><span>06</span><p><strong>Authentication</strong> — password, certificate, federation, managed identity, or token; never collect secret values in an inventory.</p></div>
+              <div><span>07</span><p><strong>Lifecycle</strong> — active, inactive, pending, expired, or decommissioned, with relevant dates.</p></div>
+              <div><span>08</span><p><strong>Privilege &amp; risk</strong> — privilege level, sensitive access, SoD violations, and risk findings.</p></div>
+              <div><span>09</span><p><strong>Relationships</strong> — parent application, associated workload, human sponsor, delegated authority, and connected resources.</p></div>
+            </div>
+          </section>
+
+          <section id="identity-account" class="article-section article-conclusion">
+            <p class="eyebrow">07 / The essential distinction</p>
+            <h2>An identity is not an account</h2>
+            <p>An identity is not the same thing as an <strong>account</strong>, a <strong>credential</strong>, or an <strong>entitlement</strong>.</p>
+            <div class="distinction-flow" aria-label="Relationship between identity, account, credential, and entitlement">
+              <span>Identity</span><b aria-hidden="true">→</b><span>Accounts</span><b aria-hidden="true">→</b><span>Credentials</span><b aria-hidden="true">+</b><span>Entitlements</span>
+            </div>
+            <p>A person may have multiple accounts; an account may use several credentials; and each account may have many entitlements. Keeping these concepts distinct is fundamental to building an accurate IGA or identity-security platform.</p>
+          </section>
+
+          <footer class="article-footer">
+            <p class="eyebrow">KEEP THE CONVERSATION GOING</p>
+            <h2>Good identity decisions<br>start with <span class="accent">clear context.</span></h2>
+            <a class="button button-primary" href="mailto:krishnabharambe@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+          </footer>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer"><a class="wordmark" href="../../index.html"><span>KB</span></a><p>Designed around identity, built for people.</p><a href="#top">Back to top ↑</a></footer>
+</body>
+</html>
