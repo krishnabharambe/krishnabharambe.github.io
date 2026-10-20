@@ -112,17 +112,26 @@
           <figure class="agent-flow" aria-labelledby="agent-flow-title">
             <figcaption>
               <span class="eyebrow">THE SHORT VERSION</span>
-              <strong id="agent-flow-title">A safe agent action, step by step</strong>
+              <strong id="agent-flow-title">A safe agent action, at a glance</strong>
             </figcaption>
-            <ol class="agent-flow-steps">
-              <li><span class="flow-number">01</span><span><strong>Receive a request</strong><small>Identify the requester and the task.</small></span></li>
-              <li><span class="flow-number">02</span><span><strong>Establish agent identity</strong><small>Use a known agent and scoped authority.</small></span></li>
-              <li><span class="flow-number">03</span><span><strong>Check policy and access</strong><small>Verify the action, resource, and permissions.</small></span></li>
-              <li><span class="flow-number">04</span><span><strong>Get approval when needed</strong><small>Pause for review if impact or policy requires it.</small></span></li>
-              <li><span class="flow-number">05</span><span><strong>Run a scoped tool action</strong><small>The tool validates and enforces access.</small></span></li>
-              <li><span class="flow-number">06</span><span><strong>Record the outcome</strong><small>Log the actor, decision, target, and result.</small></span></li>
-            </ol>
-            <p class="agent-flow-deny"><span aria-hidden="true">↳</span><span><strong>If authorization fails:</strong> stop the action and record the denial.</span></p>
+            <pre class="mermaid agent-mermaid" role="img" aria-label="AI agent security flow: identify the requester and agent, check policy, stop and audit denied actions, require human approval when needed, execute an authorized scoped tool action, and record the outcome.">flowchart TD
+  REQUEST["User request"] --> IDENTITY["Identify requester and agent"]
+  IDENTITY --> POLICY["Check policy and scoped access"]
+  POLICY -->|Denied| DENY["Stop and record denial"]
+  POLICY -->|Allowed| APPROVAL{"Approval required?"}
+  APPROVAL -->|Yes| REVIEW["Human reviews action"]
+  APPROVAL -->|No| TOOL["Execute scoped tool action"]
+  REVIEW -->|Rejected| DENY
+  REVIEW -->|Approved| TOOL
+  TOOL --> AUDIT["Record actor, target, decision, and outcome"]
+
+  classDef process fill:#ffffff,stroke:#b7d6c1,color:#26364a,stroke-width:1px
+  classDef decision fill:#eaf4ed,stroke:#63a47e,color:#26364a,stroke-width:1px
+  classDef denied fill:#fbf3f1,stroke:#c98981,color:#754c46,stroke-width:1px
+  class REQUEST,IDENTITY,POLICY,REVIEW,TOOL,AUDIT process
+  class APPROVAL decision
+  class DENY denied</pre>
+            <p class="agent-flow-note">The model proposes; policy authorizes. If authorization fails, stop the action and record the denial.</p>
           </figure>
 
           <section id="agent-model" class="article-section">
@@ -317,5 +326,27 @@
   </main>
 
   <footer class="site-footer"><a class="wordmark" href="../../index.html"><span>KB</span></a><p>Designed around identity, built for people.</p><a href="../">Back to articles ↑</a></footer>
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11.4.1/dist/mermaid.esm.min.mjs';
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: 'strict',
+      theme: 'base',
+      flowchart: { htmlLabels: false, curve: 'linear' },
+      themeVariables: {
+        fontFamily: 'DM Sans, Segoe UI, sans-serif',
+        fontSize: '14px',
+        lineColor: '#78a98a',
+        primaryColor: '#ffffff',
+        primaryTextColor: '#26364a',
+        primaryBorderColor: '#b7d6c1',
+        secondaryColor: '#eaf4ed',
+        tertiaryColor: '#fbf3f1'
+      }
+    });
+
+    await mermaid.run({ querySelector: '.agent-mermaid' });
+  </script>
 </body>
 </html>
