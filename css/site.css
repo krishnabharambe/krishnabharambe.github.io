@@ -166,7 +166,7 @@ h2 { margin-bottom: 0; font-size: clamp(37px, 4.1vw, 54px); font-weight: 600; le
   .wordmark-name { display: none; }
   .site-nav { gap: 0; }
   .site-nav > a:not(.nav-cta) { display: none; }
-  .site-nav > a[href="Thinking/identities/"] { display: inline-block; margin-right: 14px; }
+  .site-nav > a[href="Thinking/"] { display: inline-block; margin-right: 14px; }
   .nav-cta { padding: 10px 12px; font-size: 10px; }
   .hero { min-height: auto; height: auto; grid-template-columns: 1fr; gap: 25px; padding: 130px 7% 84px; }
   .hero-copy { max-width: 100%; }

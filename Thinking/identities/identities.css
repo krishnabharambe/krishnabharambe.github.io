@@ -87,6 +87,7 @@
   .article-header .wordmark-name { display: none; }
   .article-nav { gap: 0; }
   .article-nav a:not(:first-child) { display: none; }
+  .article-nav a.thinking-link { display: inline-block; margin-right: 14px; }
   .article-hero { min-height: 0; grid-template-columns: 1fr; gap: 25px; padding: 112px 7% 40px; }
   .article-hero h1 { font-size: clamp(45px,11.7vw,62px); }
   .article-deck { font-size: 13px; }

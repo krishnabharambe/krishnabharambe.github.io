@@ -1,0 +1,260 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101b2d">
+  <meta name="description" content="A defensive guide to AI agent security: identity, least privilege, tool boundaries, human approvals, safe execution, observability, and incident response.">
+  <title>Securing AI Agents — Krishna Bharambe</title>
+  <link rel="stylesheet" href="../../css/site.css">
+  <link rel="stylesheet" href="../identities/identities.css">
+  <link rel="stylesheet" href="ai-agent-security.css">
+</head>
+<body class="article-page">
+  <header class="article-header" id="top">
+    <a class="wordmark" href="../../index.html" aria-label="Krishna Bharambe home"><span>KB</span><span class="wordmark-name">Krishna Bharambe</span></a>
+    <nav class="article-nav" aria-label="Article navigation">
+      <a href="../../index.html">Portfolio</a>
+      <a class="thinking-link" href="../">Thinking</a>
+      <a href="#identity">Identity</a>
+      <a href="#tools">Controls</a>
+    </nav>
+  </header>
+
+  <main>
+    <article>
+      <header class="article-hero">
+        <div class="article-hero-inner">
+          <a class="article-back" href="../">← All articles</a>
+          <p class="eyebrow"><span class="status-dot"></span> THINKING / AI SECURITY</p>
+          <h1>Securing AI agents:<br><span class="accent">identity, tools, and control.</span></h1>
+          <p class="article-deck">An AI agent is more than a model response: it can hold context, call tools, and cause changes. Secure it like a real actor—with an owner, a bounded identity, controlled capabilities, and an auditable lifecycle.</p>
+          <div class="article-byline"><span>By Krishna Bharambe</span><span aria-hidden="true">·</span><span>Identity &amp; Automation</span><span aria-hidden="true">·</span><span>10 min read</span></div>
+        </div>
+        <div class="article-hero-art agent-hero-art" aria-hidden="true">
+          <div class="article-orbit article-orbit-one"></div>
+          <div class="article-orbit article-orbit-two"></div>
+          <div class="article-orbit-core"><span>AI</span><small>BOUNDED<br>AUTHORITY</small></div>
+          <span class="orbit-label orbit-label-top">IDENTITY · TOOLS · DATA</span>
+          <span class="orbit-label orbit-label-bottom">PLAN → AUTHORIZE → REVIEW</span>
+        </div>
+      </header>
+
+      <div class="article-layout">
+        <aside class="article-toc" aria-label="Table of contents">
+          <p class="toc-heading">IN THIS ARTICLE</p>
+          <a href="#agent-model">A practical agent model</a>
+          <a href="#identity">Give each agent an identity</a>
+          <a href="#least-privilege">Apply least privilege</a>
+          <a href="#tools">Constrain tools &amp; actions</a>
+          <a href="#untrusted-input">Treat input as untrusted</a>
+          <a href="#execution">Isolate execution</a>
+          <a href="#data-secrets">Protect data &amp; secrets</a>
+          <a href="#approvals">Use human approvals</a>
+          <a href="#observability">Make actions auditable</a>
+          <a href="#testing">Test the complete system</a>
+          <a href="#rollout">Roll out in stages</a>
+        </aside>
+
+        <div class="article-content">
+          <p class="article-lead">An AI agent can combine a model, prompts, memory, tools, credentials, and access to business systems. Security depends on governing that complete system—not just the model.</p>
+          <p>The useful IAM question is not only “Who can sign in?” It is also “Which agent is acting, on whose authority, through which tool, against what resource, and where is that action recorded?”</p>
+          <aside class="article-callout">
+            <span class="callout-mark" aria-hidden="true">i</span>
+            <p><strong>Start with bounded autonomy.</strong> Give the agent only the capabilities required for its task. Keep consequential actions reviewable, and make safe behavior the default when identity, policy, or context cannot be verified.</p>
+          </aside>
+
+          <section id="agent-model" class="article-section">
+            <p class="eyebrow">01 / Understand the system</p>
+            <h2>A practical model for an AI agent</h2>
+            <p>Before selecting controls, map the components and trust boundaries. These parts may be operated by different teams and should not be treated as one shared identity.</p>
+            <div class="agent-component-grid">
+              <div><span>01</span><strong>Model</strong><p>Produces outputs from instructions and supplied context.</p></div>
+              <div><span>02</span><strong>Agent runtime</strong><p>Maintains task state, selects actions, and coordinates execution.</p></div>
+              <div><span>03</span><strong>Tools</strong><p>Expose specific operations such as search, read, update, or submit.</p></div>
+              <div><span>04</span><strong>Identity &amp; credentials</strong><p>Establish who or what is acting and which authority it receives.</p></div>
+              <div><span>05</span><strong>Data &amp; memory</strong><p>Provide the context an agent can retrieve, retain, or pass onward.</p></div>
+              <div><span>06</span><strong>Owner &amp; operator</strong><p>Are accountable for purpose, permissions, review, and retirement.</p></div>
+            </div>
+            <p>Each connection is a security boundary: user-to-agent, agent-to-model, agent-to-tool, tool-to-resource, and runtime-to-memory. Document those flows, data types, identities, and failure behaviors before granting production access.</p>
+          </section>
+
+          <section id="identity" class="article-section">
+            <p class="eyebrow">02 / Establish accountability</p>
+            <h2>Give each agent a distinct identity</h2>
+            <p>An agent that acts against enterprise resources should be attributable to a specific workload identity and accountable owner. Avoid shared credentials that make unrelated agents indistinguishable.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Record</th><th scope="col">Governance purpose</th></tr></thead>
+                <tbody>
+                  <tr><td>Stable agent ID</td><td>Distinguishes this agent from its model, tools, users, and other workloads.</td></tr>
+                  <tr><td>Owner and sponsor</td><td>Names the team responsible for purpose, permissions, review, and retirement.</td></tr>
+                  <tr><td>Business purpose</td><td>Describes the approved use case and intended operating context.</td></tr>
+                  <tr><td>Environment</td><td>Separates development, test, and production identities and access.</td></tr>
+                  <tr><td>Authority model</td><td>Records whether actions use workload authority, delegated user authority, or an approved combination.</td></tr>
+                  <tr><td>Lifecycle state</td><td>Supports activation, suspension, review, expiry, and decommissioning.</td></tr>
+                  <tr><td>Connected tools and data</td><td>Shows the capabilities and resource boundaries available to the agent.</td></tr>
+                  <tr><td>Review history</td><td>Records approvals, access reviews, changes, and material incidents.</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <aside class="article-callout callout-dark">
+              <span class="callout-mark" aria-hidden="true">!</span>
+              <p><strong>Delegation needs boundaries.</strong> If an agent acts for a user, scope the delegation to the task, resources, and duration. Do not silently turn a user request into broad, reusable agent authority.</p>
+            </aside>
+          </section>
+
+          <section id="least-privilege" class="article-section">
+            <p class="eyebrow">03 / Limit blast radius</p>
+            <h2>Apply least privilege to every run</h2>
+            <p>Least privilege applies to the agent identity, the user delegation, each tool, and the resources behind the tool. A model’s ability to suggest an action is not itself authorization to perform it.</p>
+            <div class="agent-principle-list">
+              <div><span>01</span><p><strong>Separate read and write.</strong> Start with read-only capabilities; grant changes only where the use case requires them.</p></div>
+              <div><span>02</span><p><strong>Scope to resources.</strong> Restrict access to the required tenant, project, records, or data classification.</p></div>
+              <div><span>03</span><p><strong>Use short-lived authority.</strong> Obtain credentials for a specific task and expire or revoke them promptly.</p></div>
+              <div><span>04</span><p><strong>Keep environments apart.</strong> Do not reuse development or test credentials in production.</p></div>
+              <div><span>05</span><p><strong>Review privilege changes.</strong> Reassess permissions when tools, models, prompts, owners, or purposes change.</p></div>
+            </div>
+            <p>Where delegated access is available, prefer explicit and narrow authorization over storing a person’s long-lived credentials in an agent runtime.</p>
+          </section>
+
+          <section id="tools" class="article-section">
+            <p class="eyebrow">04 / Put policy between reasoning and action</p>
+            <h2>Constrain tools and side effects</h2>
+            <p>Tools are where an agent’s reasoning can become an external effect. Treat every tool as a privileged interface with a documented owner, authorization policy, input contract, and audit trail.</p>
+            <div class="agent-component-grid agent-controls-grid">
+              <div><span>ALLOW</span><strong>Named operations</strong><p>Expose purpose-built actions instead of broad, unrestricted interfaces.</p></div>
+              <div><span>CHECK</span><strong>Authorization</strong><p>Enforce policy in the tool or service, not only in a prompt.</p></div>
+              <div><span>VALIDATE</span><strong>Arguments</strong><p>Verify types, formats, resource ownership, and allowed values.</p></div>
+              <div><span>LIMIT</span><strong>Rate &amp; scope</strong><p>Cap operation volume and bound accessible resources.</p></div>
+              <div><span>SEPARATE</span><strong>Preview &amp; commit</strong><p>Make consequential changes an explicit, reviewable step.</p></div>
+              <div><span>RECORD</span><strong>Tool results</strong><p>Capture actor, authorization, target, outcome, and correlation ID.</p></div>
+            </div>
+            <p>Prefer safe, narrow functions that represent approved business actions. Avoid giving an agent general-purpose access to a shell, database, or administrative API when a bounded operation will meet the need.</p>
+          </section>
+
+          <section id="untrusted-input" class="article-section">
+            <p class="eyebrow">05 / Keep data separate from authority</p>
+            <h2>Treat retrieved content as untrusted input</h2>
+            <p>Agents may process documents, messages, web pages, tickets, or tool output that contain misleading instructions. That content can inform a task, but it must not grant permissions, override policy, or authorize a tool action.</p>
+            <div class="agent-principle-list">
+              <div><span>01</span><p><strong>Preserve trust labels.</strong> Track whether context came from a user, a trusted system, or an external source.</p></div>
+              <div><span>02</span><p><strong>Keep policy outside retrieved content.</strong> Authorization should be enforced by trusted code and services.</p></div>
+              <div><span>03</span><p><strong>Verify before acting.</strong> Re-check user intent, resource scope, and permissions at the tool boundary.</p></div>
+              <div><span>04</span><p><strong>Minimize context.</strong> Retrieve only the information required for the current task and respect source access controls.</p></div>
+              <div><span>05</span><p><strong>Handle uncertainty safely.</strong> Pause or request review when a source, instruction, or intended action is ambiguous.</p></div>
+            </div>
+            <p>Instruction hierarchy can help guide model behavior, but it is not a substitute for enforcing access control independently of the model.</p>
+          </section>
+
+          <section id="execution" class="article-section">
+            <p class="eyebrow">06 / Contain failures</p>
+            <h2>Isolate execution and restrict connectivity</h2>
+            <p>Run agent workloads with explicit resource limits and a clear boundary between the runtime and the host or other workloads. Isolation reduces the consequences of unexpected behavior, vulnerable dependencies, and compromised components.</p>
+            <ul class="agent-check-list">
+              <li>Use a dedicated, maintained runtime with only the components the agent needs.</li>
+              <li>Restrict filesystem access and avoid exposing host credentials or unrelated workloads.</li>
+              <li>Use controlled network egress and allow only required destinations where practical.</li>
+              <li>Set limits for runtime, memory, concurrency, and tool-call volume.</li>
+              <li>Separate development, staging, and production environments and their data.</li>
+              <li>Provide a clear way to stop an agent and revoke its active authority.</li>
+            </ul>
+            <p>Choose isolation controls appropriate to the sensitivity of the data and the potential impact of the actions. Isolation is one layer, not a reason to grant extra privileges.</p>
+          </section>
+
+          <section id="data-secrets" class="article-section">
+            <p class="eyebrow">07 / Protect sensitive material</p>
+            <h2>Protect data, memory, and credentials</h2>
+            <p>Agent context and memory can accumulate sensitive business or personal information. Define what may be collected, retained, searched, and shared, and enforce the same data-access rules across retrieval and tools.</p>
+            <div class="table-wrap">
+              <table>
+                <thead><tr><th scope="col">Area</th><th scope="col">Defensive practice</th></tr></thead>
+                <tbody>
+                  <tr><td>Credentials</td><td>Use an approved secret manager or workload identity; never place secrets in prompts, source control, or general conversation logs.</td></tr>
+                  <tr><td>Retention</td><td>Set purpose-based retention and deletion for prompts, traces, memory, and intermediate artifacts.</td></tr>
+                  <tr><td>Retrieval</td><td>Enforce the requesting user’s or workload’s access policy when fetching source data.</td></tr>
+                  <tr><td>Training and reuse</td><td>Define whether submitted data may be used for model improvement or later tasks.</td></tr>
+                  <tr><td>Logging</td><td>Redact or minimize sensitive values while preserving enough metadata for oversight.</td></tr>
+                  <tr><td>Memory</td><td>Make persistent memory scoped, reviewable, correctable, and removable when no longer needed.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section id="approvals" class="article-section">
+            <p class="eyebrow">08 / Match autonomy to impact</p>
+            <h2>Use human approval for consequential actions</h2>
+            <p>Approval should depend on the action’s impact and reversibility—not simply on whether an AI is involved. A low-risk lookup may be automated; a sensitive or hard-to-reverse change deserves stronger controls.</p>
+            <div class="approval-scale">
+              <div><span class="risk-label risk-low">LOW IMPACT</span><strong>Read or summarize</strong><p>Automate within authorized read scope; retain traceability.</p></div>
+              <div><span class="risk-label risk-medium">MODERATE IMPACT</span><strong>Prepare a change</strong><p>Generate a preview and require the appropriate person to confirm.</p></div>
+              <div><span class="risk-label risk-high">HIGH IMPACT</span><strong>Privileged or irreversible</strong><p>Require explicit authorization, policy checks, and a clear recovery plan.</p></div>
+            </div>
+            <p>Show the reviewer what will change, why the agent proposes it, which identity will act, and the scope of the action. Keep approval separate from the content being processed so untrusted data cannot approve itself.</p>
+          </section>
+
+          <section id="observability" class="article-section">
+            <p class="eyebrow">09 / Know what happened</p>
+            <h2>Make actions observable and auditable</h2>
+            <p>Useful records connect a human request to an agent run, the identity and delegated authority used, each tool decision, the target resource, approval, and final outcome. Consistent correlation IDs help connect logs across services.</p>
+            <div class="agent-principle-list">
+              <div><span>LOG</span><p><strong>Security-relevant events.</strong> Record identity issuance, permission changes, tool calls, approvals, policy denials, and lifecycle changes.</p></div>
+              <div><span>PROTECT</span><p><strong>The audit trail.</strong> Limit access, set retention, and protect logs from unauthorized alteration.</p></div>
+              <div><span>ALERT</span><p><strong>Meaningful deviations.</strong> Surface unusual volume, out-of-scope attempts, repeated denials, and unexpected privilege use.</p></div>
+              <div><span>RESPOND</span><p><strong>Contain and recover.</strong> Assign incident ownership and practice pausing runs, revoking access, and reviewing affected resources.</p></div>
+            </div>
+            <p>Do not log credentials or sensitive payloads by default. Capture the minimum evidence needed to investigate while respecting privacy and data-handling requirements.</p>
+          </section>
+
+          <section id="testing" class="article-section">
+            <p class="eyebrow">10 / Validate the system, not just the model</p>
+            <h2>Test security across the full lifecycle</h2>
+            <p>Evaluate expected behavior and failure behavior before release and after meaningful changes. Include the runtime, identity provider, tools, data sources, policy enforcement, human workflow, and monitoring in scope.</p>
+            <ul class="agent-check-list">
+              <li>Verify that each tool enforces the intended identity and resource permissions.</li>
+              <li>Confirm that denied, expired, or missing authorization fails closed.</li>
+              <li>Check that agent identity and user delegation remain distinguishable in records.</li>
+              <li>Test how the system handles conflicting instructions and untrusted retrieved content.</li>
+              <li>Review data access, retention, deletion, and redaction behavior.</li>
+              <li>Exercise approval, cancellation, timeout, revocation, and recovery flows.</li>
+              <li>Reassess after changing models, prompts, tools, permissions, or connected data.</li>
+            </ul>
+            <p>Use controlled environments and synthetic or approved test data. A passing model evaluation alone does not prove the surrounding access controls are effective.</p>
+          </section>
+
+          <section id="rollout" class="article-section">
+            <p class="eyebrow">11 / A practical adoption path</p>
+            <h2>Roll out in stages</h2>
+            <div class="agent-rollout">
+              <div><span>01</span><strong>Inventory</strong><p>Identify agents, owners, tools, data, identities, and environments.</p></div>
+              <div><span>02</span><strong>Start read-only</strong><p>Validate usefulness and access boundaries before enabling changes.</p></div>
+              <div><span>03</span><strong>Bound the action</strong><p>Add only specific, policy-enforced operations needed for the use case.</p></div>
+              <div><span>04</span><strong>Review high impact</strong><p>Set approval and recovery requirements according to risk.</p></div>
+              <div><span>05</span><strong>Monitor and improve</strong><p>Review events, access, incidents, and changing business needs.</p></div>
+            </div>
+            <aside class="article-callout">
+              <span class="callout-mark" aria-hidden="true">✓</span>
+              <p><strong>Before production, confirm:</strong> every agent has an owner and unique identity; each permission has a reason; tools enforce authorization; sensitive actions are appropriately reviewed; and the team can audit, pause, and retire the agent.</p>
+            </aside>
+          </section>
+
+          <section id="conclusion" class="article-section article-conclusion">
+            <p class="eyebrow">THE SECURITY PRINCIPLE</p>
+            <h2>Autonomy should never be unaccountable</h2>
+            <p>Secure AI agents by making identity explicit, authority narrow, tool actions policy-controlled, execution contained, and outcomes reviewable. Increase autonomy only when the controls and evidence support it.</p>
+            <p>This is a defensive starting point, not a substitute for a threat model, privacy review, or the requirements of your organization and industry.</p>
+          </section>
+
+          <footer class="article-footer">
+            <p class="eyebrow">KEEP THE CONVERSATION GOING</p>
+            <h2>Build useful agents.<br><span class="accent">Keep authority bounded.</span></h2>
+            <a class="button button-primary" href="mailto:krishnabharambe@gmail.com">Get in touch <span aria-hidden="true">↗</span></a>
+          </footer>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer"><a class="wordmark" href="../../index.html"><span>KB</span></a><p>Designed around identity, built for people.</p><a href="../">Back to articles ↑</a></footer>
+</body>
+</html>

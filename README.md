@@ -7,7 +7,9 @@ Personal portfolio and resume website, published with GitHub Pages.
 - `index.html` — page content and navigation
 - `css/site.css` — responsive layout and visual styles
 - `assets/Krishna_Bharambe.pdf` — downloadable resume
-- `Thinking/identities/` — long-form guide to identity types in IAM
+- `Thinking/` — index of long-form technical articles
+- `Thinking/identities/` — guide to identity types in IAM
+- `Thinking/AIAgentsecurity/` — defensive guide to securing AI agents
 
 This is a static site; it does not require npm, a build step, or third-party JavaScript libraries. To preview it locally, run `python -m http.server` from the project directory, then open `http://localhost:8000/`.
 
