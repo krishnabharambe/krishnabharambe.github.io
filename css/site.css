@@ -57,9 +57,7 @@ h1 { margin-bottom: 24px; font-size: clamp(58px, 6.3vw, 88px); font-weight: 600;
 .orbit-one { width: 86%; height: 86%; }
 .orbit-two { width: 62%; height: 62%; border-color: rgba(184,242,216,.25); }
 .visual-core { position: absolute; top: 50%; left: 50%; display: flex; width: 33%; height: 33%; flex-direction: column; align-items: center; justify-content: center; border: 1px solid rgba(184,242,216,.45); border-radius: 50%; background: linear-gradient(145deg, #1d3548, #122033); box-shadow: 0 0 50px rgba(70,189,146,.13), inset 0 0 30px rgba(184,242,216,.06); transform: translate(-50%,-50%); }
-.core-mark { font-family: var(--display); font-size: 43px; font-weight: 500; letter-spacing: -.1em; }
-.core-mark span { color: var(--mint); }
-.core-caption { margin-top: 5px; color: #a8b9c3; font-family: var(--mono); font-size: 7px; letter-spacing: .12em; line-height: 1.7; text-align: center; }
+.core-caption { color: #a8b9c3; font-family: var(--mono); font-size: 9px; letter-spacing: .12em; line-height: 1.7; text-align: center; }
 .float-card { position: absolute; z-index: 1; display: flex; width: 255px; align-items: center; gap: 12px; padding: 13px 14px; border: 1px solid rgba(255,255,255,.13); background: rgba(23,38,59,.91); box-shadow: 0 15px 40px rgba(0,0,0,.16); color: #e7ecef; font-size: 11px; font-weight: 600; }
 .card-iga { top: 28%; left: 0; }
 .card-auto { right: -2%; bottom: 28%; }
